@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.angel.antezana.emailverificationdemo.exception.UserAlreadyExistsException;
 import com.angel.antezana.emailverificationdemo.registration.RegistrationRequest;
+import com.angel.antezana.emailverificationdemo.registration.token.VerificationToken;
+import com.angel.antezana.emailverificationdemo.registration.token.VerificationTokenRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +20,8 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final VerificationTokenRepository tokenRepository;
     @Override
     public List<User> getUsers() {
       return userRepository.findAll();
@@ -44,6 +48,13 @@ public class UserServiceImpl implements UserService{
     @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void saveUserVerificationToken(User user, String verificationToken) {
+       
+        var verificationToken2 = new VerificationToken(verificationToken,user);
+        tokenRepository.save(verificationToken2);
     }
     
 
