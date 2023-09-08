@@ -24,7 +24,6 @@ public class RegistrationController {
     @PostMapping
     private String registerUser(@RequestBody RegistrationRequest registrationRequest, final HttpServletRequest request){
         User user = userService.registerUser(registrationRequest);
-        //publich registration event //VIDEO 35:17
         publisher.publishEvent(new RegistrationCompleteEvent(user,  applicationUrl(request)));
 
         return "Usuario registrado con exito. Please,check your email for to complete your registration";
