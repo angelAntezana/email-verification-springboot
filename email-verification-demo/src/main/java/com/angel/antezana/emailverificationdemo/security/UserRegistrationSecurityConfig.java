@@ -26,8 +26,9 @@ public class UserRegistrationSecurityConfig {
                     csrf.disable())
                 .authorizeHttpRequests(authRequest->
                         authRequest
-                        .requestMatchers("/api/v1/register").permitAll()
-                        .requestMatchers("/api/v1/users").hasAnyAuthority("USER","ADMIN"))
+                        .requestMatchers("/api/v1/register/**").permitAll()
+                        .requestMatchers("/api/v1/users/holamundo").hasAnyAuthority("PRUEBA")
+                        .requestMatchers("/api/v1/users/**").hasAnyAuthority("USER","ADMIN"))
                 .formLogin(Customizer.withDefaults())
                 .build();
     }

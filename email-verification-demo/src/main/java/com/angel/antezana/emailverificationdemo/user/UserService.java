@@ -11,4 +11,5 @@ public interface UserService {
     User registerUser(RegistrationRequest request);
     Optional<User> findByEmail(String email);
     void saveUserVerificationToken(User user, String verificationToken);
+    String validateToken(String verificationToken);
 }

@@ -19,4 +19,9 @@ public class UserController {
     public List<User> getUsers(){
         return userService.getUsers();
     }
+    @GetMapping("/holamundo")
+    public String holamundo(){
+        return "Hola mundo perros";
+    }
+    //VIDEO 2:23:40
 }

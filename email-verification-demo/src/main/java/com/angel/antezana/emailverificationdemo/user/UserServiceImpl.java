@@ -1,5 +1,6 @@
 package com.angel.antezana.emailverificationdemo.user;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,24 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<User> getUsers() {
       return userRepository.findAll();
+    }
+
+    @Override
+    public String validateToken(String verificationToken) {
+        VerificationToken token = tokenRepository.findByToken(verificationToken).get();
+        
+        if(token == null){
+            return "Invalid verfication token";
+        }
+        User user = token.getUser();
+        Calendar calendar = Calendar.getInstance();
+        if((token.getExpirationTime().getTime() - calendar.getTime().getTime())<=0){
+            tokenRepository.delete(token);
+            return "Token already expired";
+        }
+        user.setEnabled(true);
+        userRepository.save(user);
+        return "Valid";
     }
 
     @Override
