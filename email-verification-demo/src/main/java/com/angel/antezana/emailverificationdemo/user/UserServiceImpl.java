@@ -3,6 +3,7 @@ package com.angel.antezana.emailverificationdemo.user;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,8 +39,8 @@ public class UserServiceImpl implements UserService{
         User user = token.getUser();
         Calendar calendar = Calendar.getInstance();
         if((token.getExpirationTime().getTime() - calendar.getTime().getTime())<=0){
-            tokenRepository.delete(token);
-            return "Token already expired";
+            return "Verification link already expired," +
+            " Please, click the link below to receive a new verification link";
         }
         user.setEnabled(true);
         userRepository.save(user);
@@ -74,6 +75,15 @@ public class UserServiceImpl implements UserService{
        
         var verificationToken2 = new VerificationToken(verificationToken,user);
         tokenRepository.save(verificationToken2);
+    }
+
+    @Override
+    public VerificationToken generateNewVerificationToken(String oldToken) {
+        VerificationToken verificationToken = tokenRepository.findByToken(oldToken).get();
+        VerificationToken verificationTokenTime = new VerificationToken();
+        verificationToken.setToken(UUID.randomUUID().toString());
+        verificationToken.setExpirationTime(verificationTokenTime.getTokenExpirationTime());
+        return tokenRepository.save(verificationToken);
     }
     
 

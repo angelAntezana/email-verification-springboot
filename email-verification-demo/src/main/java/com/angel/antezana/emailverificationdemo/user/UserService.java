@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.angel.antezana.emailverificationdemo.registration.RegistrationRequest;
+import com.angel.antezana.emailverificationdemo.registration.token.VerificationToken;
 
 public interface UserService {
     
@@ -12,4 +13,5 @@ public interface UserService {
     Optional<User> findByEmail(String email);
     void saveUserVerificationToken(User user, String verificationToken);
     String validateToken(String verificationToken);
+    VerificationToken generateNewVerificationToken(String oldToken);
 }
